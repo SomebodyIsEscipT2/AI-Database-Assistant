@@ -12,12 +12,20 @@ from src.models.schemas import (
     QueryHistoryRecord,
     QueryHistoryResponse,
     QueryStatsResponse,
+    SchemaAnalysisRequest,
+    SchemaAnalysisResponse,
+    SchemaIssue as SchemaIssueModel,
     SQLAnalysisRequest,
     SQLAnalysisResponse,
 )
 from src.services import ai_service
 from src.services.query_history import history_store
 from src.core.sql_analyzer import detect_issues
+from src.core.schema_analyzer import (
+    parse_create_tables,
+    analyze_schema,
+    generate_summary,
+)
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -104,3 +112,36 @@ async def get_query_history(
 async def get_query_stats():
     """Aggregate analytics across all analyzed queries."""
     return QueryStatsResponse(**history_store.get_stats())
+
+
+# ── Schema Analyzer ──────────────────────────────────────────────────────
+
+
+@router.post("/schema/analyze", response_model=SchemaAnalysisResponse)
+async def analyze_schema_endpoint(request: SchemaAnalysisRequest):
+    """Analyze CREATE TABLE statements for indexing, normalization, and anti-patterns."""
+    tables = parse_create_tables(request.schema_sql)
+
+    if not tables:
+        raise HTTPException(
+            status_code=400,
+            detail="No valid CREATE TABLE statements found in the provided SQL.",
+        )
+
+    issues = analyze_schema(tables)
+    summary = generate_summary(tables, issues)
+
+    return SchemaAnalysisResponse(
+        tables_analyzed=len(tables),
+        issues=[
+            SchemaIssueModel(
+                table=i.table,
+                severity=i.severity,
+                category=i.category,
+                message=i.message,
+                suggestion=i.suggestion,
+            )
+            for i in issues
+        ],
+        summary=summary,
+    )
