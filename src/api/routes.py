@@ -9,6 +9,9 @@ from src.models.schemas import (
     ChatRequest,
     ChatResponse,
     HealthResponse,
+    QueryComparisonRequest,
+    QueryComparisonResponse,
+    QueryDiff,
     QueryHistoryRecord,
     QueryHistoryResponse,
     QueryStatsResponse,
@@ -26,6 +29,7 @@ from src.core.schema_analyzer import (
     analyze_schema,
     generate_summary,
 )
+from src.core.query_comparator import compare_queries
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -145,3 +149,15 @@ async def analyze_schema_endpoint(request: SchemaAnalysisRequest):
         ],
         summary=summary,
     )
+
+
+# ── Query Comparison ────────────────────────────────────────────────────────
+
+
+@router.post("/compare", response_model=QueryComparisonResponse)
+async def compare_queries_endpoint(request: QueryComparisonRequest):
+    """Compare original and optimized queries — token counts, issues diff, structural changes."""
+    result = compare_queries(request.original_query, request.optimized_query)
+    # Convert structural_changes dict to QueryDiff model
+    result["structural_changes"] = QueryDiff(**result["structural_changes"])
+    return QueryComparisonResponse(**result)
