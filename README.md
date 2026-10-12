@@ -6,7 +6,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-green.svg)](https://fastapi.tiangolo.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests](https://github.com/escipionpedroza147-commits/AI-Database-Assistant/actions/workflows/tests.yml/badge.svg)](https://github.com/escipionpedroza147-commits/AI-Database-Assistant/actions/workflows/tests.yml)
+[![Tests](https://github.com/SomebodyIsEscipT2/AI-Database-Assistant/actions/workflows/tests.yml/badge.svg)](https://github.com/SomebodyIsEscipT2/AI-Database-Assistant/actions/workflows/tests.yml)
 [![Tests](https://img.shields.io/badge/tests-79%20passed-brightgreen.svg)]()
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED.svg?logo=docker)](Dockerfile)
 
@@ -29,7 +29,7 @@ A production-grade AI assistant that helps database professionals:
 
 ```bash
 # Clone
-git clone https://github.com/escipionpedroza147-commits/AI-Database-Assistant.git
+git clone https://github.com/SomebodyIsEscipT2/AI-Database-Assistant.git
 cd AI-Database-Assistant
 
 # Install
@@ -245,4 +245,4 @@ MIT — see [LICENSE](LICENSE).
 ## Contact
 
 **Escipion Pedroza**  
-GitHub: [@escipionpedroza147-commits](https://github.com/escipionpedroza147-commits)
+GitHub: [@SomebodyIsEscipT2](https://github.com/SomebodyIsEscipT2)
